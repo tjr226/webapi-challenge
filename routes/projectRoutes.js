@@ -4,6 +4,16 @@ const router = express.Router();
 const projectDB = require('../data/helpers/projectModel.js');
 
 // POST
+router.post('/', validateProject, (req, res) => {
+    const projectInfo = req.body;
+    projectDB.insert(projectInfo)
+    .then(project => {
+        res.status(201).json(project);
+    })
+    .catch(error => {
+        res.status(500).json({ error: "The project could not be created." });
+    })
+})
 
 
 // GET ALL
@@ -50,5 +60,13 @@ function validateProjectId(req, res, next) {
     })
 }
 
+function validateProject(req, res, next) {
+    const projectInfo = req.body;
+    if (projectInfo.name === undefined || projectInfo.description === undefined) {
+        return res.status(400).json({ errorMessage: "Please provide name and description for project." });
+    } else {
+        next();
+    }
+}
 
 module.exports = router;
