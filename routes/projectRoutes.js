@@ -41,7 +41,30 @@ router.get('/:id', validateProjectId, (req, res) => {
 
 // PUT
 
+router.put('/:id', validateProjectId, validateProject, (req, res) => {
+    const { id } = req.params;
+    projectInfo = req.body;
+    projectDB.update(id, projectInfo)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(error => {
+        res.status(500).json({ error: "The project could not be updated." });
+    })
+})
+
 // DELETE
+
+router.delete('/:id', validateProjectId, (req, res) => {
+    const { id } = req.params;
+    projectDB.remove(id)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(error => {
+        res.status(500).json({ error: "The project could not be deleted." });
+    })
+})
 
 // MIDDLEWARE
 
