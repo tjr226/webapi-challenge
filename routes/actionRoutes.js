@@ -40,8 +40,30 @@ router.get('/:id', validateActionId, (req, res) => {
 })
 
 // PUT
+router.put('/:id', validateAction, validateActionId, (req, res) => {
+    const { id } = req.params;
+    actionInfo = req.body;
+    actionDB.update(id, actionInfo)
+    .then(response => {
+        res.status(200).json(response);
+    })
+    .catch(error => {
+        res.status(500).json({ error: "The action could not be modified." });
+    })
+})
 
 // DELETE
+ router.delete('/:id', validateActionId, (req, res) => {
+     const { id } = req.params;
+     actionDB.remove(id)
+     .then(response => {
+         res.status(200).json(response);
+     })
+     .catch(error => {
+         res.status(500).json({ error: "The action could not be deleted." });
+     })
+ })
+
 
 // MIDDLEWARE
 
