@@ -39,6 +39,18 @@ router.get('/:id', validateProjectId, (req, res) => {
     })
 })
 
+// GET ACTIONS BY PROJECT ID
+router.get('/:id/actions', validateProjectId, (req, res) => {
+    const { id } = req.params;
+    projectDB.get(id)
+    .then(project => {
+        res.status(200).json(project.actions);
+    })
+    .catch(error => {
+        res.status(500).json({ error: "The project could not be retrieved." });
+    })
+})
+
 // PUT
 
 router.put('/:id', validateProjectId, validateProject, (req, res) => {
